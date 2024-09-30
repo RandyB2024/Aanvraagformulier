@@ -1024,35 +1024,6 @@ toggleupdateBelanghebbendenInfo();
     <button class="submit-button" onclick="showModal()">Aanvraag indienen</button>
 <button id="downloadFormButton" style="display:block; margin:20px auto; background-color:blue; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">
 });
-
-function generatePDF() {
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pageHeight = pdf.internal.pageSize.height;
-    let currentHeight = 0;
-
-    const pages = document.querySelectorAll('.form-page');
-
-    pages.forEach((page, index) => {
-        html2canvas(page, { scale: 2 }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const imgWidth = 210; // A4 breedte in mm
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-            if (index === 0) {
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                currentHeight = imgHeight;
-            } else {
-                if (currentHeight + imgHeight > pageHeight) {
-                    pdf.addPage();
-                    currentHeight = 0;
-                }
-                pdf.addImage(imgData, 'PNG', 0, currentHeight, imgWidth, imgHeight);
-                currentHeight += imgHeight;
-            }
-
-            if (index === pages.length - 1) {
-                pdf.save("aanvraagformulier.pdf");
-            }
         });
     });
 }
